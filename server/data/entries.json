@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1783199384226",
+    "timestamp": "7/4/2026, 5:09:44 PM",
+    "ph": 7.5,
+    "chlorinePpm": 4,
+    "saltPpm": 4423,
+    "temperature": 80,
+    "totalAlkalinity": 80
+  },
+  {
+    "id": "1783198562420",
+    "timestamp": "7/4/2026, 4:56:02 PM",
+    "ph": 7.5,
+    "chlorinePpm": 6,
+    "saltPpm": 2401,
+    "temperature": 89,
+    "totalAlkalinity": 80
+  },
+  {
+    "id": "714cc38d-b2ae-4cc0-b22b-c52b302ab7d2",
+    "timestamp": "7/4/2026, 4:53:19 PM",
+    "ph": 7.2,
+    "chlorinePpm": 2,
+    "saltPpm": 3345,
+    "temperature": 90,
+    "totalAlkalinity": 79.99
+  },
+  {
+    "id": "verify-entry",
+    "timestamp": "now",
+    "ph": 7.2,
+    "chlorinePpm": 2.5,
+    "saltPpm": 3200,
+    "temperature": 82,
+    "totalAlkalinity": 120
+  }
+]

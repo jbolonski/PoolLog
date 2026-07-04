@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="PoolLog maskable icon">
+  <rect width="512" height="512" rx="160" fill="#081a2d" />
+  <rect x="76" y="76" width="360" height="360" rx="108" fill="#0d6c70" />
+  <path d="M124 214c27 0 27 18 54 18s27-18 54-18 27 18 54 18 27-18 54-18 27 18 54 18" fill="none" stroke="#d8ffff" stroke-linecap="round" stroke-width="18" />
+  <path d="M110 278c37 0 37 28 74 28s37-28 74-28 37 28 74 28 37-28 74-28 37 28 74 28" fill="none" stroke="#7ef2e4" stroke-linecap="round" stroke-width="26" />
+  <circle cx="256" cy="172" r="20" fill="#f4b860" />
+  <path d="M194 350h124" stroke="#ffffff" stroke-linecap="round" stroke-width="22" />
+</svg>
