@@ -37,10 +37,23 @@ npm run build
 
 ## Docker
 
-Build and run the container stack:
+The project can be built locally or published to GitHub Container Registry (GHCR) through the GitHub Actions workflow in [.github/workflows/docker-publish.yml](.github/workflows/docker-publish.yml).
+
+### Build locally
 
 ```bash
 docker compose up -d --build
+```
+
+### Pull and deploy images from GitHub Container Registry
+
+1. Update the image references in [docker-compose.yml](docker-compose.yml) to use your GitHub username or organization.
+2. Push the workflow to GitHub and run the publish action.
+3. Pull and deploy the published images:
+
+```bash
+docker compose pull
+docker compose up -d
 ```
 
 The stack uses a persistent volume for backend data and can be routed through Traefik with the provided compose labels.

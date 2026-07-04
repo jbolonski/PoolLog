@@ -1,0 +1,42 @@
+services:
+  frontend:
+    image: ghcr.io/jbolonski/poollog-frontend:latest
+    pull_policy: always
+    depends_on:
+      - backend
+    networks:
+      - default
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.poollog-frontend.rule=Host(`poollog.local`) && !PathPrefix(`/api`)
+      - traefik.http.routers.poollog-frontend.entrypoints=web
+      - traefik.http.services.poollog-frontend.loadbalancer.server.port=80
+
+  backend:
+    image: ghcr.io/jbolonski/poollog-backend:latest
+    pull_policy: always
+    environment:
+      PORT: 3001
+      POOLLOG_DATA_PATH: /data/entries.json
+    networks:
+      - default
+      - traefik
+    volumes:
+      - poollog-data:/data
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.poollog-api.rule=Host(`poollog.local`) && PathPrefix(`/api`)
+      - traefik.http.routers.poollog-api.entrypoints=web
+      - traefik.http.services.poollog-api.loadbalancer.server.port=3001
+
+volumes:
+  poollog-data:
+
+networks:
+  default:
+    name: poollog_default
+  traefik:
+    name: traefik
