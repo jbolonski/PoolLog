@@ -1,4 +1,5 @@
 import express from 'express'
+import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createPoolLogStore } from './poolLogStore.mjs'
@@ -9,6 +10,7 @@ const app = express()
 const host = process.env.HOST || '0.0.0.0'
 const port = Number(process.env.PORT || 3001)
 const store = createPoolLogStore(process.env.POOLLOG_DATA_PATH || path.join(__dirname, 'data', 'entries.json'))
+const frontendDistPath = process.env.POOLLOG_DIST_PATH || path.join(__dirname, '..', 'dist')
 
 app.use(express.json())
 
@@ -45,10 +47,17 @@ app.post('/api/pool-logs', async (req, res) => {
   }
 })
 
-app.use(express.static(path.join(__dirname, '..', 'dist')))
+app.use(express.static(frontendDistPath))
 
 app.get(/.*/, (_req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'))
+  const indexPath = path.join(frontendDistPath, 'index.html')
+
+  if (!fs.existsSync(indexPath)) {
+    res.status(404).send('Frontend assets are not available. The frontend container should serve them directly.')
+    return
+  }
+
+  res.sendFile(indexPath)
 })
 
 app.listen(port, host, () => {

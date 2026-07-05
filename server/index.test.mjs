@@ -1,6 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
+import fs from 'node:fs'
+import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -50,5 +52,27 @@ test('npm run dev starts the backend API alongside the frontend', async () => {
     assert.equal(response.status, 200)
   } finally {
     child.kill('SIGTERM')
+  }
+})
+
+test('backend returns a 404 when the frontend bundle is unavailable', async () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'poollog-'))
+  const command = process.platform === 'win32' ? 'npm.cmd' : 'npm'
+  const child = spawn(command, ['run', 'dev'], {
+    cwd: projectRoot,
+    stdio: ['ignore', 'pipe', 'pipe'],
+    env: { ...process.env, CI: '1', POOLLOG_DIST_PATH: tempDir },
+  })
+
+  try {
+    await waitForHealth()
+
+    const response = await fetch('http://127.0.0.1:3001/')
+    assert.equal(response.status, 404)
+    const body = await response.text()
+    assert.match(body, /frontend assets are not available/i)
+  } finally {
+    child.kill('SIGTERM')
+    fs.rmSync(tempDir, { recursive: true, force: true })
   }
 })
