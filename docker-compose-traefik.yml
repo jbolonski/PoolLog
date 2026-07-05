@@ -27,6 +27,7 @@ services:
       POOLLOG_DATA_PATH: /data/entries.json
     networks:
       - proxy
+      - poolnet
     volumes:
       - poollog-data:/data
     labels:
@@ -48,3 +49,5 @@ volumes:
 networks:
   proxy:
       external: true
+  poolnet:
+      driver: bridge
