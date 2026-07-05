@@ -284,6 +284,21 @@ input {
   padding: 1rem;
 }
 
+.auth-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--line-soft);
+  border-radius: 1.2rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.auth-copy {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.55;
+}
+
 .empty-state {
   margin: 0;
   color: var(--text-soft);

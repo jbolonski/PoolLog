@@ -27,7 +27,7 @@ services:
       - default
     volumes:
       - poollog-data:/data
-      - ./data:/data:ro
+      - ./data/auth-users.json:/data/auth-users.json:ro
 
 volumes:
   poollog-data:
