@@ -5,14 +5,19 @@ services:
     depends_on:
       - backend
     networks:
-      - default
-      - traefik
+      - proxy
     labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik
-      - traefik.http.routers.poollog-frontend.rule=Host(`poollog.local`) && !PathPrefix(`/api`)
-      - traefik.http.routers.poollog-frontend.entrypoints=web
-      - traefik.http.services.poollog-frontend.loadbalancer.server.port=80
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.poollog-frontend.entrypoints=http"
+      - "traefik.http.routers.poollog-frontend.rule=Host(`poollog.docker.jbolo.net`) && !PathPrefix(`/api`)"
+      - "traefik.http.middlewares.poollog-frontend-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.poollog-frotnend.middlewares=meshmonitor-https-redirect"
+      - "traefik.http.routers.poollog-frontend-secure.entrypoints=https"
+      - "traefik.http.routers.poollog-frontend-secure.rule=Host(`poollog.docker.jbolo.net`)"
+      - "traefik.http.routers.poollog-frontend-secure.tls=true"
+      - "traefik.http.routers.poollog-frontend-secure.service=poollog-frontend"
+      - "traefik.http.services.poollog-frontend.loadbalancer.server.port=80"
 
   backend:
     image: ghcr.io/jbolonski/poollog-backend:latest
@@ -21,22 +26,25 @@ services:
       PORT: 3001
       POOLLOG_DATA_PATH: /data/entries.json
     networks:
-      - default
-      - traefik
+      - proxy
     volumes:
       - poollog-data:/data
     labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik
-      - traefik.http.routers.poollog-api.rule=Host(`poollog.local`) && PathPrefix(`/api`)
-      - traefik.http.routers.poollog-api.entrypoints=web
-      - traefik.http.services.poollog-api.loadbalancer.server.port=3001
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.poollog-api.entrypoints=http"
+      - "traefik.http.routers.poollog-api.rule=Host(`poollog.docker.jbolo.net`) && PathPrefix(`/api`)"
+      - "traefik.http.middlewares.poollog-api-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.poollog-api.middlewares=meshmonitor-https-redirect"
+      - "traefik.http.routers.poollog-api-secure.entrypoints=https"
+      - "traefik.http.routers.poollog-api-secure.rule=Host(`poollog.docker.jbolo.net`)"
+      - "traefik.http.routers.poollog-api-secure.tls=true"
+      - "traefik.http.routers.poollog-api-secure.service=poollog-api"
+      - "traefik.http.services.poollog-api.loadbalancer.server.port=3001"
 
 volumes:
   poollog-data:
 
 networks:
-  default:
-    name: poollog_default
-  traefik:
-    name: traefik
+  proxy:
+      external: true

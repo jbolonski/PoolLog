@@ -1,7 +1,11 @@
 services:
   frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_API_BASE_URL: /api
     image: ghcr.io/jbolonski/poollog-frontend:latest
-    pull_policy: always
     depends_on:
       - backend
     ports:
@@ -10,8 +14,10 @@ services:
       - default
 
   backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     image: ghcr.io/jbolonski/poollog-backend:latest
-    pull_policy: always
     environment:
       PORT: 3001
       POOLLOG_DATA_PATH: /data/entries.json
