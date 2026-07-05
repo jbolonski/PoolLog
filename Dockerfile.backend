@@ -7,4 +7,5 @@ COPY public ./public
 EXPOSE 3001
 ENV PORT=3001
 ENV POOLLOG_DATA_PATH=/data/entries.json
+ENV POOLLOG_AUTH_FILE=/data/auth-users.json
 CMD ["node", "server/index.mjs"]

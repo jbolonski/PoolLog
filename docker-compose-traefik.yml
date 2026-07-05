@@ -30,6 +30,7 @@ services:
       - poolnet
     volumes:
       - poollog-data:/data
+      - ./data:/data:ro
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"

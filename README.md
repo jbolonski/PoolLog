@@ -57,3 +57,20 @@ docker compose up -d
 ```
 
 The stack uses a persistent volume for backend data and can be routed through Traefik with the provided compose labels.
+
+### Basic authentication for published deployments
+
+1. Create a file at [data/auth-users.json](data/auth-users.json) with the following shape:
+
+```json
+{
+  "users": [
+    { "username": "demo", "password": "change-me" }
+  ]
+}
+```
+
+2. Make sure the file is available to the backend container. The provided Docker Compose files mount the local [data](data) directory into the backend container at `/data`, and the backend reads credentials from `/data/auth-users.json` by default.
+3. Restart the stack after adding or changing the credentials file.
+
+If the file is absent or empty, the backend will allow access without authentication so local development remains straightforward.
